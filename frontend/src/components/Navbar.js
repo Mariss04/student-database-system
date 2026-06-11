@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-function Navbar({ onLoginClick }) {
+function Navbar({ onLoginClick, onLogout }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -9,6 +9,7 @@ function Navbar({ onLoginClick }) {
   const isLoginPage = location.pathname === "/log";
 
   const handleLogout = () => {
+    onLogout();
     navigate("/log");
   };
 

@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login({ showLoginCard }) {
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:1000/api";
+
+function Login({ showLoginCard, onLogin }) {
   const [email, setEmail] = useState("mari@gmail.com");
   const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
   const cardRef = useRef(null);
@@ -16,15 +19,47 @@ function Login({ showLoginCard }) {
     }
   }, [showLoginCard]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!email.trim() || !password.trim()) {
       alert("Please enter email and password");
       return;
     }
 
-    navigate("/main");
+    try {
+      setIsSubmitting(true);
+
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+        }),
+      });
+
+      const contentType = res.headers.get("content-type") || "";
+
+      if (!contentType.includes("application/json")) {
+        throw new Error("Login API is not returning JSON. Please check that the backend is running on port 1000.");
+      }
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      onLogin(data.token);
+      navigate("/main");
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -58,8 +93,8 @@ function Login({ showLoginCard }) {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button className="btn btn-success w-100 fw-bold">
-              Login
+            <button className="btn btn-success w-100 fw-bold" disabled={isSubmitting}>
+              {isSubmitting ? "Logging in..." : "Login"}
             </button>
           </form>
         </div>

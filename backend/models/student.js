@@ -10,6 +10,8 @@ const studentSchema = new mongoose.Schema({
   rollno: {
     type: Number,
     required: true,
+    unique: true,
+    min: 1,
   },
 
   department: {
@@ -21,6 +23,8 @@ const studentSchema = new mongoose.Schema({
   year: {
     type: Number,
     required: true,
+    min: 1,
+    max: 5,
   },
 });
 

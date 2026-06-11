@@ -1,7 +1,41 @@
 const express = require("express");
-const Student = require("../models/Student");
+const mongoose = require("mongoose");
+const Student = require("../models/student");
 
 const router = express.Router();
+
+const formatStudentData = (body) => ({
+  name: String(body.name || "").trim(),
+  rollno: Number(body.rollno),
+  department: String(body.department || "").trim(),
+  year: Number(body.year),
+});
+
+const validateStudentData = ({ name, rollno, department, year }) => {
+  if (!name || !department) {
+    return "Name and department are required.";
+  }
+
+  if (!Number.isInteger(rollno) || rollno <= 0) {
+    return "Roll number must be a positive number.";
+  }
+
+  if (!Number.isInteger(year) || year < 1 || year > 5) {
+    return "Year must be a number between 1 and 5.";
+  }
+
+  return null;
+};
+
+const isInvalidId = (id) => !mongoose.Types.ObjectId.isValid(id);
+
+const handleError = (res, error) => {
+  if (error.code === 11000) {
+    return res.status(409).json({ message: "Roll number already exists." });
+  }
+
+  return res.status(500).json({ message: error.message });
+};
 
 /* ================================
    GET ALL STUDENTS
@@ -20,19 +54,18 @@ router.get("/students", async (req, res) => {
 ================================ */
 router.post("/students", async (req, res) => {
   try {
-    const { name, rollno, department, year } = req.body;
+    const studentData = formatStudentData(req.body);
+    const validationError = validateStudentData(studentData);
 
-    const newStudent = new Student({
-      name,
-      rollno,
-      department,
-      year,
-    });
+    if (validationError) {
+      return res.status(400).json({ message: validationError });
+    }
 
+    const newStudent = new Student(studentData);
     await newStudent.save();
-    res.json({ message: "Student added successfully!" });
+    res.status(201).json({ message: "Student added successfully!", student: newStudent });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    handleError(res, error);
   }
 });
 
@@ -42,12 +75,29 @@ router.post("/students", async (req, res) => {
 router.put("/students/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    const studentData = formatStudentData(req.body);
+    const validationError = validateStudentData(studentData);
 
-    await Student.findByIdAndUpdate(id, req.body, { new: true });
+    if (isInvalidId(id)) {
+      return res.status(400).json({ message: "Invalid student ID." });
+    }
 
-    res.json({ message: "Student details updated!" });
+    if (validationError) {
+      return res.status(400).json({ message: validationError });
+    }
+
+    const updatedStudent = await Student.findByIdAndUpdate(id, studentData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedStudent) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+
+    res.json({ message: "Student details updated!", student: updatedStudent });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    handleError(res, error);
   }
 });
 
@@ -58,11 +108,19 @@ router.delete("/students/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    await Student.findByIdAndDelete(id);
+    if (isInvalidId(id)) {
+      return res.status(400).json({ message: "Invalid student ID." });
+    }
+
+    const deletedStudent = await Student.findByIdAndDelete(id);
+
+    if (!deletedStudent) {
+      return res.status(404).json({ message: "Student not found." });
+    }
 
     res.json({ message: "Student deleted successfully!" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    handleError(res, error);
   }
 });
 

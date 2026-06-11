@@ -9,11 +9,16 @@ connectDB();
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
+  })
+);
 app.use(express.json());
 
 // Routes
-app.use("/api", require("./routes/studentRoutes"));
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api", require("./middleware/authMiddleware"), require("./routes/studentRoutes"));
 
 // Test route
 app.get("/", (req, res) => {
