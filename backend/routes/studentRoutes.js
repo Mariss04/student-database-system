@@ -20,8 +20,8 @@ const validateStudentData = ({ name, rollno, department, year }) => {
     return "Roll number must be a positive number.";
   }
 
-  if (!Number.isInteger(year) || year < 1 || year > 5) {
-    return "Year must be a number between 1 and 5.";
+  if (!Number.isInteger(year) || year <= 0) {
+    return "Year must be a positive number.";
   }
 
   return null;
@@ -37,9 +37,7 @@ const handleError = (res, error) => {
   return res.status(500).json({ message: error.message });
 };
 
-/* ================================
-   GET ALL STUDENTS
-================================ */
+//  GET ALL STUDENTS
 router.get("/students", async (req, res) => {
   try {
     const students = await Student.find().sort({ _id: -1 });
@@ -49,9 +47,7 @@ router.get("/students", async (req, res) => {
   }
 });
 
-/* ================================
-   ADD STUDENT
-================================ */
+  //  ADD STUDENT
 router.post("/students", async (req, res) => {
   try {
     const studentData = formatStudentData(req.body);
@@ -69,9 +65,7 @@ router.post("/students", async (req, res) => {
   }
 });
 
-/* ================================
-   UPDATE STUDENT
-================================ */
+//  UPDATE STUDENT
 router.put("/students/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -101,9 +95,7 @@ router.put("/students/:id", async (req, res) => {
   }
 });
 
-/* ================================
-   DELETE STUDENT
-================================ */
+//  DELETE STUDENT
 router.delete("/students/:id", async (req, res) => {
   try {
     const { id } = req.params;
