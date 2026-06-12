@@ -5,8 +5,10 @@ import StudentForm from "./StudentForm";
 import StudentList from "./StudentList";
 import EditModal from "./EditModal";
 
-const API_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:1000/api/students";
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL ||
+  "https://student-database-system-59hi.onrender.com/api";
+const API_URL = process.env.REACT_APP_API_URL || `${API_BASE_URL}/students`;
 
 const getErrorMessage = (error) =>
   error.response?.data?.message || "Something went wrong. Please try again.";

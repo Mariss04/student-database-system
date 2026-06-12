@@ -11,7 +11,11 @@ const app = express();
 // Middlewares
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "https://student-database-system-1-qvao.onrender.com"
+    ],
+    credentials: true
   })
 );
 app.use(express.json());

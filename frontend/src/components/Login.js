@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:1000/api";
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL ||
+  "https://student-database-system-59hi.onrender.com/api";
+const LOGIN_URL = `${API_BASE_URL}/auth/login`;
 
 function Login({ showLoginCard, onLogin }) {
   const [email, setEmail] = useState("mari@gmail.com");
@@ -30,7 +33,7 @@ function Login({ showLoginCard, onLogin }) {
     try {
       setIsSubmitting(true);
 
-      const res = await fetch(`${API_BASE_URL}/auth/login`, {
+      const res = await fetch(LOGIN_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +47,7 @@ function Login({ showLoginCard, onLogin }) {
       const contentType = res.headers.get("content-type") || "";
 
       if (!contentType.includes("application/json")) {
-        throw new Error("Login API is not returning JSON. Please check that the backend is running on port 1000.");
+        throw new Error("Login API is not returning JSON. Please check the backend API URL.");
       }
 
       const data = await res.json();
@@ -64,15 +67,13 @@ function Login({ showLoginCard, onLogin }) {
 
   return (
     <div className="login-page">
-      {/* BACKGROUND CONTENT */}
       <div className={showLoginCard ? "login-bg blur-bg" : "login-bg"}>
-        <h1 className="fw-bold text-dark mb-3">Welcome Admin 👋</h1>
+        <h1 className="fw-bold text-dark mb-3">Welcome Admin</h1>
         <p className="text-muted fs-5">
-          Click the <b>Login</b> Add the Students Database to continue.
+          Click the <b>Login</b> button to manage the student database.
         </p>
       </div>
 
-      {/* LOGIN CARD */}
       {showLoginCard && (
         <div ref={cardRef} className="login-box login-animate shadow-lg">
           <h2 className="text-center fw-bold mb-4">Admin Login</h2>
