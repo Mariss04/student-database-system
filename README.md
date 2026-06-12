@@ -1,161 +1,100 @@
 # 🎓 Student Database Management System
 
-A full-stack MERN application used to manage student records efficiently. The system allows administrators to perform complete CRUD (Create, Read, Update, Delete) operations on student data through a responsive and user-friendly interface.
-
----
+A full-stack MERN application for managing student records with secure admin authentication and complete CRUD operations.
 
 ## 🚀 Live Demo
 
-Live Project: [Add Render URL Here]
+Frontend:
+https://student-database-system-1-qvao.onrender.com
 
----
+Backend API:
+https://student-database-system-59hi.onrender.com
 
-## 📂 GitHub Repository
+## 📌 Features
 
-GitHub: https://github.com/Mariss04/student-database-system
+* Admin Login Authentication
+* Add Student Records
+* View Student Records
+* Update Student Information
+* Delete Student Records
+* Search Students
+* MongoDB Atlas Integration
+* JWT Token Authentication
+* Responsive User Interface
+* Cloud Deployment using Render
 
----
-
-## ✨ Features
-
-- Admin Login Authentication
-- Add New Students
-- View Student Records
-- Update Student Information
-- Delete Student Records
-- Search Students
-- REST API Integration
-- MongoDB Database Connectivity
-- Responsive User Interface
-- Full CRUD Functionality
-
----
-
-## 🛠️ Tech Stack
+## 🛠️ Technologies Used
 
 ### Frontend
-- React.js
-- Bootstrap
-- Axios
-- React Router DOM
+
+* React.js
+* Bootstrap
+* Axios
+* React Router DOM
 
 ### Backend
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- CORS
-- Dotenv
 
----
+* Node.js
+* Express.js
+* MongoDB Atlas
+* Mongoose
+* JWT Authentication
 
-## 📁 Project Structure
+### Deployment
 
-```
-student-database-system
+* Render
+* GitHub
+
+## 📂 Project Structure
+
+student-database-system/
 │
-├── backend
-│   ├── config
-│   ├── models
-│   ├── routes
-│   ├── server.js
-│   └── package.json
+├── frontend/
+│ ├── src/
+│ ├── public/
+│ └── package.json
 │
-├── frontend
-│   ├── public
-│   ├── src
-│   └── package.json
+├── backend/
+│ ├── config/
+│ ├── middleware/
+│ ├── models/
+│ ├── routes/
+│ ├── utils/
+│ └── server.js
 │
 └── README.md
-```
-
----
 
 ## ⚙️ Installation
 
 ### Clone Repository
 
-```bash
-git clone https://github.com/Mariss04/student-database-system.git
-```
+git clone <repository-url>
 
 ### Backend Setup
 
-```bash
 cd backend
+
 npm install
-```
 
-Create `.env`
-
-```env
-MONGO_URI=your_mongodb_connection_string
-```
-
-Start Backend
-
-```bash
 npm start
-```
-
----
 
 ### Frontend Setup
 
-```bash
 cd frontend
+
 npm install
+
 npm start
-```
 
----
+## 🔐 Authentication
 
-## 🔗 API Endpoints
-
-### Get All Students
-
-```http
-GET /api/students
-```
-
-### Add Student
-
-```http
-POST /api/students
-```
-
-### Update Student
-
-```http
-PUT /api/students/:id
-```
-
-### Delete Student
-
-```http
-DELETE /api/students/:id
-```
-
----
-
-## 📸 Screenshots
-
-Add project screenshots here after deployment.
-
----
+The system uses JWT-based authentication for secure admin access.
 
 ## 👨‍💻 Author
 
-**Mariselvam S**
+MariSelvam S
 
 Aspiring Full Stack Web Developer
 
-LinkedIn: Add Your LinkedIn URL
-
-GitHub: https://github.com/Mariss04
-
----
-
-## 📄 License
-
-This project is created for learning and portfolio purposes.
+Technologies:
+React.js | Node.js | Express.js | MongoDB | JavaScript
